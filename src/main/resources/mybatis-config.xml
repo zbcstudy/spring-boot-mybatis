@@ -17,6 +17,6 @@
 
     <!--我们写好的sql文件一定要映射到全局配置中-->
     <mappers>
-        <mapper resource="EmployeeMapper.xml"/>
+        <mapper resource="mapper/EmployeeMapper.xml"/>
     </mappers>
 </configuration>
