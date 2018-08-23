@@ -3,20 +3,112 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-    <environments default="development">
-        <environment id="development">
+    <!--
+        mybatis可以使用properties引入外部properties配置文件内容
+            resource：引入类路径下的内容
+            url:引入网络路径或磁盘路径
+    -->
+    <properties resource="dbconfig.properties"></properties>
+
+    <!--
+        settings拥有很多重要的设置
+    -->
+    <settings>
+        <!--驼峰命名-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!--
+        typeAliases 别名应用,为Java类型起别名
+        别名不区分大小写
+    -->
+    <typeAliases>
+        <!--
+            1.typeAlias 为某个Java类型起别名
+            type 指定要起别名的类型全类名；默认别名就是类名小写：employee
+            alies:指定新的别名
+        -->
+        <!--<typeAlias type="com.wondertek.mybatis.domain.Employee" alias="emp"/>-->
+        <!-- 2.package 为某个包下的所有类起别名-->
+        <package name="com.wondertek.mybatis.domain"/>
+
+        <!--3.批量起别名的情况下，使用@Alias注解为某个类型指定新的别名-->
+    </typeAliases>
+
+    <!--
+        typeHandlers:数据库类型和Java类型进行适配
+    -->
+
+
+    <!--
+        environments:mybatis可以配置多个环境 development指定使用某种环境
+        environment :配置一个具体的环境信息；必须有两个标签：id代表当前环境的唯一标示
+            transactionManager：事务管理器
+                type：事务管理器类型 JDBC|MANAGED
+                      自定义 实现TransactionFactory接口，type为全类名
+            dataSource        ：数据源 UNPOOLED|POOLED|JNDI
+                                自定义数据源 实现DataSourceFactory
+    -->
+    <environments default="dev_mysql">
+        <environment id="dev_mysql">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://127.0.0.1:3306/mybatis"/>
-                <property name="username" value="root"/>
-                <property name="password" value="123456"/>
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+        <environment id="dev_oracle">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${orcl.driver}"/>
+                <property name="url" value="${orcl.url}"/>
+                <property name="username" value="${orcl.username}"/>
+                <property name="password" value="${orcl.password}"/>
             </dataSource>
         </environment>
     </environments>
 
-    <!--我们写好的sql文件一定要映射到全局配置中-->
+    <!--
+        databaseIdProvider 支持多数据库厂商
+            type="DB_VENDOR" VendorDatabaseIdProvider
+            作用就是得到数据库厂商标识（驱动getDatabaseProductName()）,mybatis就能
+            MYSQL, ORACLE, SQL SERVER
+     -->
+    <databaseIdProvider type="DB_VENDOR">
+        <property name="MySQL" value="mysql"/>
+        <property name="Oracle" value="oracle"/>
+        <property name="SQL Server" value="sql server"/>
+    </databaseIdProvider>
+
+    <!--
+        我们写好的sql文件一定要映射到全局配置中
+        resource:引用类路径下的SQL映射文件
+        url:应用磁盘路径或磁盘路径下的sql映射文件
+        class：引用（注册）接口
+            1、sql映射文件必须与接口同名，并且与接口放在同一目录下
+            2、没有SQL映射文件，所有SQL都是利用注解写在接口上
+    -->
     <mappers>
         <mapper resource="mapper/EmployeeMapper.xml"/>
+        <!--<mapper class=""/>-->
+        <!--
+            批量注册
+         -->
+        <!--<package name="com.wondertek.mybatis.mapper"/>-->
     </mappers>
 </configuration>
+
+
+
+
+
+
+
+
+
+
+
+

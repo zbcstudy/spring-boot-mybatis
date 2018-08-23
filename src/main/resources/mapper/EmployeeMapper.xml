@@ -3,17 +3,88 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.mybatis.example.EmployeeMapper">
+<mapper namespace="com.wondertek.mybatis.mapper.EmployeeMapper">
 
     <!--
-    namespace:名称空间
+    namespace:名称空间;指定为接口的全类名
     id 唯一标识
     resultType 范围值类型
+    databaseId:指定查询数据库的类型
     -->
 
-    <select id="selectEmp" resultType="com.wondertek.mybatis.domain.Employee">
-        select id,last_name lastName,gender,email from tb_employee where id = #{id}
+    <select id="getEmpById" resultType="emp"
+            databaseId="mysql">
+        select id,last_name,gender,email from tb_employee where id = #{id}
     </select>
+
+    <!--当数据库类型为oracle时 查询的SQL语句-->
+    <!--<select id="getEmpById" resultType="emp"
+            databaseId="oracle">
+        select id,last_name,gender,email from tb_employee where id = #{id}
+    </select>-->
+
+    <!--
+        public void addEmp(Employee employee);
+        parameterType 参数类型 可以省略
+        mybatis 支持自增主键,自增主键值得获取，mybatis也是使用statement.getGenreatedKeys()
+        useGeneratedKeys="true" : 使用自增逐渐获取主键策略
+        keyProperty : 指定对应的主键属性，也就是mybatis获取到主键值以后，将这个值封装给JavaBean的那个属性
+    -->
+    <insert id="addEmp" parameterType="com.wondertek.mybatis.domain.Employee"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tb_employee(last_name,email,gender)
+        VALUES (#{lastName},#{email},#{gender})
+    </insert>
+
+    <!--
+        oracle数据库不支持自增，oracle使用序列
+         每次插入先获取序列的值
+    -->
+    <insert id="addEmp" databaseId="oracle">
+        <!--
+            keyProperty:查出的主键值封装给JavaBean的那个属性
+            order="BEFORE" ： 当前SQL在插入SQL之前执行
+            resultType="Integer": 查出的数据的返回值执行
+            运行顺序：
+        -->
+        <selectKey keyProperty="id" order="BEFORE" resultType="Integer">
+            SELECT employee_seq.nextval from dual
+        </selectKey>
+        <!-- 插入之前先获取主键-->
+        INSERT INTO tb_employee(id,last_name,email,gender)
+        VALUES (#{id},#{lastName},#{email},#{gender})
+
+        <!-- 插入之后先获取主键-->
+        /*INSERT INTO tb_employee(id,last_name,email,gender)
+        VALUES (employee_seq.currval,#{lastName},#{email},#{gender})*/
+    </insert>
+
+
+    <!-- public void updateEmp(Employee employee);-->
+    <update id="updateEmp">
+        UPDATE tb_employee
+        SET last_name = #{lastName},email=#{email},gender=#{gender}
+        WHERE id=#{id}
+    </update>
+
+    <!--public void deleteEmp(Integer id);-->
+    <delete id="deleteEmp">
+        DELETE FROM tb_employee WHERE id = #{id}
+    </delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </mapper>

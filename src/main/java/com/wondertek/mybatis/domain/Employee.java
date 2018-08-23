@@ -1,5 +1,8 @@
 package com.wondertek.mybatis.domain;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("emp")
 public class Employee {
 
     private Integer id;
@@ -9,6 +12,17 @@ public class Employee {
     private String gender;
 
     private String email;
+
+    public Employee() {
+
+    }
+
+    public Employee(Integer id, String lastName, String gender, String email) {
+        this.id = id;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.email = email;
+    }
 
     public Integer getId() {
         return id;
