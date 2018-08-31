@@ -5,13 +5,38 @@
 
 <mapper namespace="com.wondertek.mybatis.mapper.EmployeeMapper">
 
+    <!--Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);-->
+    <select id="getEmpByLastNameLikeReturnMap" resultType="com.wondertek.mybatis.domain.Employee">
+        SELECT * FROM tb_employee WHERE last_name LIKE #{last_name};
+    </select>
+
+    <!-- Map<String, Object> getEmpByIdReturnMap(Integer id);-->
+    <select id="getEmpByIdReturnMap" resultType="map">
+        SELECT * FROM tb_employee WHERE id = #{id};
+    </select>
+
+    <!--public List<Employee> getEmpByLastNameLike(String lastName);-->
+    <!--返回的是一个集合,要写集合中元素的类型-->
+    <select id="getEmpByLastNameLike" resultType="com.wondertek.mybatis.domain.Employee">
+        SELECT * FROM tb_employee WHERE last_name LIKE #{last_name};
+    </select>
+
+    <select id="getEmpByMap" resultType="emp"
+            databaseId="mysql">
+        select id,last_name,gender,email from tb_employee where id = #{id} AND last_name=#{lastName}
+    </select>
+
+    <select id="getEmpByIdAndLastName" resultType="emp"
+            databaseId="mysql">
+        select id,last_name,gender,email from tb_employee where id = #{id} AND last_name=#{lastName}
+    </select>
+
     <!--
     namespace:名称空间;指定为接口的全类名
     id 唯一标识
     resultType 范围值类型
     databaseId:指定查询数据库的类型
     -->
-
     <select id="getEmpById" resultType="emp"
             databaseId="mysql">
         select id,last_name,gender,email from tb_employee where id = #{id}
@@ -52,7 +77,7 @@
         </selectKey>
         <!-- 插入之前先获取主键-->
         INSERT INTO tb_employee(id,last_name,email,gender)
-        VALUES (#{id},#{lastName},#{email},#{gender})
+        VALUES (#{id},#{lastName},#{email,jdbcType=NULL},#{gender})
 
         <!-- 插入之后先获取主键-->
         /*INSERT INTO tb_employee(id,last_name,email,gender)

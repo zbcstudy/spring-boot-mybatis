@@ -2,6 +2,7 @@ package com.wondertek.mybatis.common;
 
 import com.wondertek.mybatis.domain.Employee;
 import com.wondertek.mybatis.mapper.EmployeeMapper;
+import com.wondertek.mybatis.mapper.EmployeeMapperPlus;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,6 +11,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * mybatis初使用
@@ -111,5 +115,65 @@ public class MybatisTest {
             sqlSession.close();
         }
 
+    }
+
+    @Test
+    public void testMulti() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+
+//            Employee employee = mapper.getEmpByIdAndLastName(5,"tom");
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("id", 5);
+            paramMap.put("lastName", "tom");
+            Employee employee = mapper.getEmpByMap(paramMap);
+            System.out.println(mapper);
+            System.out.println(employee);
+        } finally {
+            sqlSession.close();
+        }
+
+    }
+
+    @Test
+    public void testForMore() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+
+//            Employee employee = mapper.getEmpByIdAndLastName(5,"tom");
+            List<Employee> list = mapper.getEmpByLastNameLike("%o%");
+            for (Employee employee : list) {
+                System.out.println(employee);
+            }
+//
+//            Map<String, Object> map = mapper.getEmpByIdReturnMap(1);
+//            System.out.println(map);
+            Map<Integer, Employee> returnMap = mapper.getEmpByLastNameLikeReturnMap("%r%");
+            System.out.println(returnMap);
+        } finally {
+            sqlSession.close();
+        }
+
+    }
+
+    @Test
+    public void testPlus() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperPlus mapper = sqlSession.getMapper(EmployeeMapperPlus.class);
+            Employee empById = mapper.getEmpById(1);
+            System.out.println(empById);
+        }finally {
+            sqlSession.close();
+        }
     }
 }

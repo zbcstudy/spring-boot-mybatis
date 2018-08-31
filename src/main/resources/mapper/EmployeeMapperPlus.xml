@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wondertek.mybatis.mapper.EmployeeMapperPlus">
+
+    <!--
+        自定义某个JavaBean的封装规则
+
+    -->
+    <resultMap id="myEmp" type="com.wondertek.mybatis.domain.Employee">
+        <!--
+            指定主键的封装规则
+            id 指定主键底层会优化
+            column：指定那一列
+            property：指定对应的JavaBean属性
+        -->
+        <id column="id" property="id"></id>
+        <!--定义普通列的封装规则-->
+        <result column="last_name" property="lastName"/>
+        <!--其他不指定的会自动封装 一般全部指定-->
+        <result column="email" property="email" />
+        <result column="gender" property="gender"/>
+    </resultMap>
+
+    <!--
+        resultMap 自定义结果集映射规则
+        resultType和resultMap只能二选一
+     -->
+    <select id="getEmpById" resultMap="myEmp">
+        select id,last_name,gender,email from tb_employee where id = #{id}
+    </select>
+
+
+</mapper>

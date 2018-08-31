@@ -15,7 +15,9 @@
     -->
     <settings>
         <!--驼峰命名-->
-        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+        <!--null的处理-->
+        <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
 
     <!--
@@ -93,6 +95,7 @@
     -->
     <mappers>
         <mapper resource="mapper/EmployeeMapper.xml"/>
+        <mapper resource="mapper/EmployeeMapperPlus.xml"/>
         <!--<mapper class=""/>-->
         <!--
             批量注册
