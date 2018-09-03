@@ -9,7 +9,7 @@
         自定义某个JavaBean的封装规则
 
     -->
-    <resultMap id="myEmp" type="com.wondertek.mybatis.domain.Employee">
+    <resultMap id="mySimpleEmp" type="com.wondertek.mybatis.domain.Employee">
         <!--
             指定主键的封装规则
             id 指定主键底层会优化
@@ -28,9 +28,81 @@
         resultMap 自定义结果集映射规则
         resultType和resultMap只能二选一
      -->
-    <select id="getEmpById" resultMap="myEmp">
+    <select id="getEmpById" resultMap="mySimpleEmp">
         select id,last_name,gender,email from tb_employee where id = #{id}
     </select>
+
+
+    <!--public Employee getEmpAndTemp(Integer id);-->
+    <!--联合查询：采用级联属性进行查询-->
+    <resultMap id="myDifEmp" type="com.wondertek.mybatis.domain.Employee">
+        <id column="id" property="id"></id>
+        <!--定义普通列的封装规则-->
+        <result column="last_name" property="lastName"/>
+        <!--其他不指定的会自动封装 一般全部指定-->
+        <result column="email" property="email" />
+        <result column="gender" property="gender"/>
+        <result column="did" property="department.id"/>
+        <result column="dept_name" property="department.departmentName"></result>
+    </resultMap>
+
+    <!--使用association定义单个对象的封装规则-->
+    <resultMap id="myDifEmp2" type="com.wondertek.mybatis.domain.Employee">
+        <id column="id" property="id"></id>
+        <!--定义普通列的封装规则-->
+        <result column="last_name" property="lastName"/>
+        <!--其他不指定的会自动封装 一般全部指定-->
+        <result column="email" property="email" />
+        <result column="gender" property="gender"/>
+        <!--
+            association:指定联合的JavaBean对象
+            property="department"：指定那个属性是联合对象
+            javaType：指定这个属性对象的类型（不能省略）
+        -->
+        <association property="department" javaType="com.wondertek.mybatis.domain.Department">
+            <id column="did" property="id"/>
+            <result column="dept_name" property="departmentName"/>
+        </association>
+    </resultMap>
+
+    <select id="getEmpAndTemp" resultMap="myDifEmp2">
+      SELECT e.id id,e.last_name last_name,e.gender gender,e.d_id d_id,
+      e.email email,d.id did,d.dept_name dept_name
+      FROM `tb_employee` e,tb_dept d
+      WHERE e.d_id = d.id AND e.id = #{id}
+    </select>
+
+    <!--List<Department> getEmpsByDeptId(Integer id);-->
+    <select id="getEmpsByDeptId" resultType="com.wondertek.mybatis.domain.Employee">
+        select * from tb_employee WHERE d_id = #{deptId};
+    </select>
+
+    <!--
+        <discriminator javaType="">
+                <case value=""></case>
+            </discriminator>
+         鉴别器：mybatis可以使用discriminator判断某列的值，然后根据某列的值改变封装行为
+         封装Employee：
+         如果查询的是女生，就将部门信息查询出来，否则不查询
+         如果是男生，把last_name这一列的值付给email
+
+    -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </mapper>

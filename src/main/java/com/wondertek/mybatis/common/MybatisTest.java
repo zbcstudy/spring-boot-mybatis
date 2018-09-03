@@ -1,6 +1,8 @@
 package com.wondertek.mybatis.common;
 
+import com.wondertek.mybatis.domain.Department;
 import com.wondertek.mybatis.domain.Employee;
+import com.wondertek.mybatis.mapper.DepartmentMapper;
 import com.wondertek.mybatis.mapper.EmployeeMapper;
 import com.wondertek.mybatis.mapper.EmployeeMapperPlus;
 import org.apache.ibatis.io.Resources;
@@ -172,6 +174,41 @@ public class MybatisTest {
             EmployeeMapperPlus mapper = sqlSession.getMapper(EmployeeMapperPlus.class);
             Employee empById = mapper.getEmpById(1);
             System.out.println(empById);
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    /**
+     * 级联查询测试
+     * getEmpAndTemp
+     */
+    @Test
+    public void testPlus1() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperPlus mapper = sqlSession.getMapper(EmployeeMapperPlus.class);
+            Employee empAndTemp = mapper.getEmpAndTemp(1);
+            System.out.println(empAndTemp.getDepartment());
+            System.out.println(empAndTemp);
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testPlus2() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            DepartmentMapper mapper = sqlSession.getMapper(DepartmentMapper.class);
+//            Department department = mapper.getDeptByIdPlus(1);
+//            System.out.println(department);
+//            System.out.println(department.getEmps());
+            Department deptByIdStep = mapper.getDeptByIdStep(1);
+            System.out.println(deptByIdStep.getDepartmentName());
+            System.out.println(deptByIdStep.getEmps());
         }finally {
             sqlSession.close();
         }
