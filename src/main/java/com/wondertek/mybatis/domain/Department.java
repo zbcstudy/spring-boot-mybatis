@@ -10,6 +10,12 @@ public class Department {
 
     private List<Employee> emps;
 
+    public Department() {
+    }
+
+    public Department(Integer id) {
+        this.id = id;
+    }
 
     public Integer getId() {
         return id;

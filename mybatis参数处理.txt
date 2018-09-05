@@ -82,6 +82,12 @@ ${}:可以获取map中的值或者pojo对象属性的值
         <setting name="jdbcTypeForNull" value="NULL"/>
 
 
+todo
+    mysql oracle 批量新增
+    mybatis内置参数 _databaseId _parameter
+    查询时使用<bind name="" value="">
+    <sql id=""></sql>
+
 
 
 

@@ -15,7 +15,7 @@
     -->
     <settings>
         <!--驼峰命名-->
-        <!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
         <!--null的处理-->
         <setting name="jdbcTypeForNull" value="NULL"/>
         <!--显示的指定每个我们需要更改的配置的值，即使是默认的。防止版本更新带来的问题-->
@@ -100,6 +100,7 @@
         <mapper resource="mapper/EmployeeMapper.xml"/>
         <mapper resource="mapper/EmployeeMapperPlus.xml"/>
         <mapper resource="mapper/DepartmentMapper.xml"/>
+        <mapper resource="mapper/EmployeeMapperDynamicSQL.xml"/>
         <!--<mapper class=""/>-->
         <!--
             批量注册

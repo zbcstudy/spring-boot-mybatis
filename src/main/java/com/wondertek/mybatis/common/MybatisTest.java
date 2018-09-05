@@ -4,6 +4,7 @@ import com.wondertek.mybatis.domain.Department;
 import com.wondertek.mybatis.domain.Employee;
 import com.wondertek.mybatis.mapper.DepartmentMapper;
 import com.wondertek.mybatis.mapper.EmployeeMapper;
+import com.wondertek.mybatis.mapper.EmployeeMapperDynamicSQL;
 import com.wondertek.mybatis.mapper.EmployeeMapperPlus;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -13,9 +14,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * mybatis初使用
@@ -209,6 +208,85 @@ public class MybatisTest {
             Department deptByIdStep = mapper.getDeptByIdStep(1);
             System.out.println(deptByIdStep.getDepartmentName());
             System.out.println(deptByIdStep.getEmps());
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testDynamicSQL() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(null, null, null, null);
+//            List<Employee> empsByConditionIf = mapper.getEmpsByConditionIf(employee);
+//            for (Employee employee1 : empsByConditionIf) {
+//                System.out.println(employee1);
+//            }
+
+//            List<Employee> empsByConditionByTrim = mapper.getEmpsByConditionByTrim(employee);
+//            for (Employee employee1 : empsByConditionByTrim) {
+//                System.out.println(employee1);
+//            }
+
+            List<Employee> empsByConditionByChoose = mapper.getEmpsByConditionByChoose(employee);
+            for (Employee employee1 : empsByConditionByChoose) {
+                System.out.println(employee1);
+            }
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testDynamicUp() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(4, "jerry1", "0", null);
+            mapper.updateEmp(employee);
+            sqlSession.commit();
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    /**
+     * 测试动态sql的foreach功能
+     */
+    @Test
+    public void testDynamicForeach() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            List<Employee> employees = mapper.getEmpByConditionByForeach(Arrays.asList(1, 2, 4, 5));
+            for (Employee employee : employees) {
+                System.out.println(employee);
+            }
+        }finally {
+            sqlSession.close();
+        }
+    }
+
+    /**
+     * 测试批量插入
+     */
+    @Test
+    public void testDynamicBatch() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            List<Employee> employees = new ArrayList<>();
+            employees.add(new Employee(null, "tom", "1", "tom@qq.com", new Department(1)));
+            employees.add(new Employee(null, "tom2", "0", "tom2@qq.com", new Department(2)));
+            mapper.addEmps(employees);
+            sqlSession.commit();
         }finally {
             sqlSession.close();
         }
