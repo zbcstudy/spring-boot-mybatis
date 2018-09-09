@@ -1,8 +1,9 @@
 package com.wondertek.mybatis.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Department {
+public class Department implements Serializable{
 
     private Integer id;
 

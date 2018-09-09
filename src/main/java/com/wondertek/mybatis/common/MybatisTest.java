@@ -78,8 +78,10 @@ public class MybatisTest {
             EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
 
             Employee employee = mapper.getEmpById(1);
-            System.out.println(mapper);
+//            System.out.println(mapper);
             System.out.println(employee);
+            Employee employee1 = mapper.getEmpById(1);
+            System.out.println(employee == employee1);
         } finally {
             sqlSession.close();
         }
@@ -288,6 +290,75 @@ public class MybatisTest {
             mapper.addEmps(employees);
             sqlSession.commit();
         }finally {
+            sqlSession.close();
+        }
+    }
+
+    /**
+     * 测试mybatis的一级缓存（本地缓存）
+     * 一级缓存失效的4种情况
+     *  1.两次查询不在一个sqlSession中
+     *  2.sqlSession相同，查询条件不同
+     *  3.sqlSession相同，两次查询之间进行了增删改操作（本次操作有可能修改了数据）
+     *  4.sqlSession相同，SQLSession被手动清空（手动清除一级缓存）
+     *
+     * 二级缓存（全局缓存）：基于nameSpace级别的缓存，一个namespace对应一个二级缓存
+     * 工作机制：
+     *  1.一个会话，查询一条数据，这个数据就会被放在当前会话的一级缓存
+     *  2、若会话关闭，一级缓存中的数据会被保存在二级缓存中，新的会话查询信息，就可以参照二级缓存
+     *  3.不同的namespace查出的数据会放在自己对应的缓存中（map）
+     * 使用：
+     *  1.开启二级缓存全局配置
+     *  2.在mapper.xml中配置
+     *      <cache></cache>
+     *  3.POJO需要实现序列化接口
+     *
+     * 缓存相关的属性/设置 <setting name="cacheEnabled" value="true"/>
+     *      cacheEnabled="true" 只能关闭二级缓存（一级缓存一直可用）
+     *      每个查询语句中的 useCache="true"
+     *                  false:不使用缓存（一级缓存一直可用）
+     *      每个增删改标签：flushCache="ture" 每次进行增删改都会刷新缓存（一级，二级都会清空）
+     *          查询标签默认：flushCache="false"
+     *       sqlSession.clearCache(): 只会清除当前session的一级缓存
+     *
+     *       localCacheScope ：本地缓存作用域（一级缓存SESSION）：当前会话的所有数据保存在缓存中
+     *                                         STATEMENT:可以禁用一级缓存
+     *
+     */
+
+    @Test
+    public void testSecondLevelCache() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //获取sqlSession对象
+        SqlSession sqlSession1 = sqlSessionFactory.openSession();
+        SqlSession sqlSession2 = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapper mapper = sqlSession1.getMapper(EmployeeMapper.class);
+            EmployeeMapper mapper1 = sqlSession2.getMapper(EmployeeMapper.class);
+            Employee emp = mapper.getEmpById(1);
+            System.out.println(emp);
+            sqlSession1.close();
+            Employee emp1 = mapper1.getEmpById(1);
+            System.out.println(emp1);
+        }finally {
+            sqlSession2.close();
+        }
+    }
+    @Test
+    public void testFirstLevelCache() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //获取sqlSession对象
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        try {
+            EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+
+            Employee employee = mapper.getEmpById(1);
+            System.out.println(employee);
+            mapper.updateEmp(new Employee(4, "tomUp", "1", "tomUp@qq.com", new Department(1)));
+            Employee employee1 = mapper.getEmpById(1);
+            System.out.println(employee == employee1);
+        } finally {
             sqlSession.close();
         }
     }

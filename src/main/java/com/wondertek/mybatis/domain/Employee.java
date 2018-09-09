@@ -2,8 +2,10 @@ package com.wondertek.mybatis.domain;
 
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 @Alias("emp")
-public class Employee {
+public class Employee implements Serializable {
 
     private Integer id;
 
