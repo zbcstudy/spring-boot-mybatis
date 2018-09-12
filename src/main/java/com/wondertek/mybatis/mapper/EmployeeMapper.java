@@ -2,6 +2,7 @@ package com.wondertek.mybatis.mapper;
 
 import com.wondertek.mybatis.domain.Employee;
 import org.apache.ibatis.annotations.MapKey;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -45,5 +46,7 @@ public interface EmployeeMapper {
     public Boolean updateEmp(Employee employee);
 
     public void deleteEmp(Integer id);
+
+    List<Employee> getAll();
 
 }

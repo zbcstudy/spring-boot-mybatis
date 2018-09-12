@@ -116,6 +116,10 @@
         DELETE FROM tb_employee WHERE id = #{id}
     </delete>
 
+    <!--List<Employee> getAll();-->
+    <select id="getAll" resultType="com.wondertek.mybatis.domain.Employee">
+        select * from tb_employee;
+    </select>
 
 
 
