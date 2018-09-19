@@ -1,5 +1,6 @@
 package com.wondertek.mybatis.service;
 
+import com.github.pagehelper.PageHelper;
 import com.wondertek.mybatis.domain.Employee;
 import com.wondertek.mybatis.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,13 @@ public class EmployeeService {
     @Autowired
     EmployeeMapper employeeMapper;
 
-    @RequestMapping("getAll")
+    @RequestMapping("/getAll")
     public List<Employee> getAll() {
-        return employeeMapper.getAll();
+        PageHelper.startPage(1, 3);
+        List<Employee> employees = employeeMapper.getAll();
+        for (Employee employee : employees) {
+            System.out.println(employee);
+        }
+        return employees;
     }
 }

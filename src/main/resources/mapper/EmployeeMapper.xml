@@ -118,7 +118,7 @@
 
     <!--List<Employee> getAll();-->
     <select id="getAll" resultType="com.wondertek.mybatis.domain.Employee">
-        select * from tb_employee;
+        select * from tb_employee
     </select>
 
 

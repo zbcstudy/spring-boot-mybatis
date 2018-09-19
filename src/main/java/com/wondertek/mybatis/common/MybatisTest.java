@@ -362,4 +362,64 @@ public class MybatisTest {
             sqlSession.close();
         }
     }
+
+
+    /**
+     * 插件原理
+     * 在4大对象创建的时候
+     * 每个对象创建的时候不是直接返回，而是
+     * interceptorChain.pluginAll(parameterHandler)
+     * 获取所有的Interceptor(拦截器) （插件需要实现的接口）
+     * 调用interceptor.plugin(target);返回target包装后的对象
+     * 插件机制：我们可以为目标对象创建一个代理对象：AOP（面向切面）
+     * 我们的插件可以为四大对象创建出代理对象
+     * 代理对象就可以拦截到四大对象的每一个执行
+     * InterceptorChain 类
+     * public Object pluginAll(Object target) {
+     *      for (Interceptor interceptor : interceptors) {
+     *          target = interceptor.plugin(target);
+     *      }
+     *      return target;
+     * }
+     *   插件实现
+     *      1.编写Interceptor的实现类
+     *      2.插件签名 @intercepts
+     *      3.在全局配置中注册插件
+     *
+     */
+    @Test
+    public void testPlugin() {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

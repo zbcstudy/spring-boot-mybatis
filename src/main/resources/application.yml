@@ -3,6 +3,7 @@ mybatis:
   mapper-locations: classpath:/mapper/EmployeeMapper.xml
   type-aliases-package: com.wondertek.mybatis.domain
 #  configuration-properties: mybatis-config.xml
+
 spring:
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
@@ -11,6 +12,8 @@ spring:
        # 使用druid数据源
       type: com.alibaba.druid.pool.DruidDataSource
       url: jdbc:mysql://127.0.0.1:3306/mybatis?allowMultiQueries=true
+pagehelper:
+  auto-dialect: mysql
 #
 #      filters: stat
 #      maxActive: 20
@@ -25,4 +28,3 @@ spring:
 #      testOnReturn: false
 #      poolPreparedStatements: true
 #      maxOpenPreparedStatements: 20
-
