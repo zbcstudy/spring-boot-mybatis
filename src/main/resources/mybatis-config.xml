@@ -40,6 +40,10 @@
 
         <!--3.批量起别名的情况下，使用@Alias注解为某个类型指定新的别名-->
     </typeAliases>
+    <plugins>
+        <plugin interceptor="com.wondertek.mybatis.plugin.FirstPlugin"></plugin>
+        <plugin interceptor="com.wondertek.mybatis.plugin.SqlStatsInterceptor"></plugin>
+    </plugins>
 
     <!--
         typeHandlers:数据库类型和Java类型进行适配
@@ -77,6 +81,7 @@
         </environment>
     </environments>
 
+
     <!--
         databaseIdProvider 支持多数据库厂商
             type="DB_VENDOR" VendorDatabaseIdProvider
@@ -88,6 +93,7 @@
         <property name="Oracle" value="oracle"/>
         <property name="SQL Server" value="sql server"/>
     </databaseIdProvider>
+    
 
     <!--
         我们写好的sql文件一定要映射到全局配置中

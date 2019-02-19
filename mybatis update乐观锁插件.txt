@@ -1,0 +1,6 @@
+乐观锁插件可以单独提取出来为一个jar包
+    annotation
+    cache
+    exception
+    interceptor
+    util
