@@ -20,9 +20,9 @@
 
     -->
     <!--<cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"></cache>-->
-    <cache type="org.mybatis.caches.ehcache.EhcacheCache">
+    <!--<cache type="org.mybatis.caches.ehcache.EhcacheCache">-->
 
-    </cache>
+    <!--</cache>-->
 
     <!--Map<Integer, Employee> getEmpByLastNameLikeReturnMap(String lastName);-->
     <select id="getEmpByLastNameLikeReturnMap" resultType="com.wondertek.mybatis.domain.Employee">
@@ -58,7 +58,7 @@
     -->
     <select id="getEmpById" resultType="emp"
             databaseId="mysql">
-        select id,last_name,gender,email from tb_employee where id = #{id}
+        select id,last_name,gender,email,version from tb_employee where id = #{id}
     </select>
 
     <!--当数据库类型为oracle时 查询的SQL语句-->
@@ -107,7 +107,7 @@
     <!-- public void updateEmp(Employee employee);-->
     <update id="updateEmp">
         UPDATE tb_employee
-        SET last_name = #{lastName},email=#{email},gender=#{gender}
+        SET last_name = #{lastName},email=#{email},gender=#{gender},version=#{version}
         WHERE id=#{id}
     </update>
 

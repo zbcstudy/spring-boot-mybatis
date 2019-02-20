@@ -388,8 +388,18 @@ public class MybatisTest {
      *
      */
     @Test
-    public void testPlugin() {
+    public void versionLockerTest() {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
 
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+
+        EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
+        Employee employee = mapper.getEmpById(12);
+        employee.setLastName("versionLock");
+        employee.setGender("0");
+        employee.setEmail("version@qq.com");
+        mapper.updateEmp(employee);
+        sqlSession.commit();
     }
 
 

@@ -1,5 +1,6 @@
 package com.wondertek.mybatis.mapper;
 
+import com.wondertek.mybatis.annotation.VersionLocker;
 import com.wondertek.mybatis.domain.Employee;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
@@ -39,10 +40,12 @@ public interface EmployeeMapper {
 
     Employee getEmpByIdAndLastName(@Param("id") Integer id, @Param("lastName") String lastName);
 
+    @VersionLocker(false)
     public Employee getEmpById(Integer id);
 
     public void addEmp(Employee employee);
 
+    @VersionLocker
     public Boolean updateEmp(Employee employee);
 
     public void deleteEmp(Integer id);

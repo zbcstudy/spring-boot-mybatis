@@ -17,6 +17,8 @@ public class Employee implements Serializable {
 
     private Department department;
 
+    private Long version;
+
     public Employee() {
 
     }
@@ -76,6 +78,14 @@ public class Employee implements Serializable {
         this.department = department;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -84,6 +94,7 @@ public class Employee implements Serializable {
                 ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
                 ", department=" + department +
+                ", version=" + version +
                 '}';
     }
 }

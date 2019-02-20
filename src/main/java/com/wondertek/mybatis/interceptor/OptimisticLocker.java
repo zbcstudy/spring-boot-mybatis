@@ -101,7 +101,7 @@ public class OptimisticLocker implements Interceptor {
             }
 
             // increase version
-            metaObject.setValue(versionColumn, (long) value + 1);
+            mo.setValue(versionColumn, (long) value + 1);
         }
         return invocation.proceed();
     }
