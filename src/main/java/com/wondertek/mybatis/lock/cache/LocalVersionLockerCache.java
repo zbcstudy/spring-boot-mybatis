@@ -1,7 +1,7 @@
-package com.wondertek.mybatis.cache;
+package com.wondertek.mybatis.lock.cache;
 
-import com.wondertek.mybatis.annotation.VersionLocker;
-import com.wondertek.mybatis.uitl.Constent;
+import com.wondertek.mybatis.lock.annotation.VersionLocker;
+import com.wondertek.mybatis.lock.uitl.Constent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

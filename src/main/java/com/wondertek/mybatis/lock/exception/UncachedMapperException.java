@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.wondertek.mybatis.exception;
+package com.wondertek.mybatis.lock.exception;
 
 /**
  * Created by wyx on 2016/6/1.

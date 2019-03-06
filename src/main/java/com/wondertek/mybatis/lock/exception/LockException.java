@@ -1,4 +1,4 @@
-package com.wondertek.mybatis.exception;
+package com.wondertek.mybatis.lock.exception;
 
 import java.io.Serializable;
 

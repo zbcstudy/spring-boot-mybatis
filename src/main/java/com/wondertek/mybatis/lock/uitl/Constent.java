@@ -1,4 +1,4 @@
-package com.wondertek.mybatis.uitl;
+package com.wondertek.mybatis.lock.uitl;
 
 /**
  * 乐观锁插件，用于标识日志

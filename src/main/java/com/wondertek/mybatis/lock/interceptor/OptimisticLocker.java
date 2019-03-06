@@ -1,8 +1,8 @@
-package com.wondertek.mybatis.interceptor;
+package com.wondertek.mybatis.lock.interceptor;
 
-import com.wondertek.mybatis.annotation.VersionLocker;
-import com.wondertek.mybatis.uitl.Constent;
-import com.wondertek.mybatis.uitl.PluginUtil;
+import com.wondertek.mybatis.lock.annotation.VersionLocker;
+import com.wondertek.mybatis.lock.uitl.Constent;
+import com.wondertek.mybatis.lock.uitl.PluginUtil;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -40,6 +40,7 @@ public class OptimisticLocker implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
+        //获取方法名称
         String invocationMethod = invocation.getMethod().getName();
         if ("prepare".equals(invocationMethod)) {
             StatementHandler routingHandler = (StatementHandler) PluginUtil.processTarget(invocation.getTarget());
@@ -48,6 +49,7 @@ public class OptimisticLocker implements Interceptor {
             VersionLocker versionLocker = VersionLockerResolver.resolve(metaObject);
             //非更新操作
             if (versionLocker != null && !versionLocker.value()) {
+                //继续执行调用链
                 return invocation.proceed();
             }
             String originalSql = (String) metaObject.getValue("boundSql.sql");

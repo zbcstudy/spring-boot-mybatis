@@ -1,9 +1,8 @@
 package com.wondertek.mybatis.mapper;
 
-import com.wondertek.mybatis.annotation.VersionLocker;
+import com.wondertek.mybatis.lock.annotation.VersionLocker;
 import com.wondertek.mybatis.domain.Employee;
 import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

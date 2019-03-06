@@ -1,4 +1,4 @@
-package com.wondertek.mybatis.annotation;
+package com.wondertek.mybatis.lock.annotation;
 
 import java.lang.annotation.*;
 

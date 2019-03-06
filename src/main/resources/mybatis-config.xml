@@ -43,7 +43,7 @@
     <plugins>
         <!--<plugin interceptor="com.wondertek.mybatis.plugin.FirstPlugin"></plugin>-->
         <plugin interceptor="com.wondertek.mybatis.plugin.SqlStatsInterceptor"></plugin>
-        <plugin interceptor="com.wondertek.mybatis.interceptor.OptimisticLocker"></plugin>
+        <plugin interceptor="com.wondertek.mybatis.lock.interceptor.OptimisticLocker"></plugin>
     </plugins>
 
     <!--

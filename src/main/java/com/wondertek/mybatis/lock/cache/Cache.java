@@ -1,6 +1,6 @@
-package com.wondertek.mybatis.cache;
+package com.wondertek.mybatis.lock.cache;
 
-import com.wondertek.mybatis.annotation.VersionLocker;
+import com.wondertek.mybatis.lock.annotation.VersionLocker;
 
 import java.util.Arrays;
 import java.util.Objects;

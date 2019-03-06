@@ -1,11 +1,11 @@
-package com.wondertek.mybatis.interceptor;
+package com.wondertek.mybatis.lock.interceptor;
 
-import com.wondertek.mybatis.annotation.VersionLocker;
-import com.wondertek.mybatis.cache.Cache;
-import com.wondertek.mybatis.cache.LocalVersionLockerCache;
-import com.wondertek.mybatis.cache.VersionLockerCache;
-import com.wondertek.mybatis.exception.LockException;
-import com.wondertek.mybatis.uitl.Constent;
+import com.wondertek.mybatis.lock.annotation.VersionLocker;
+import com.wondertek.mybatis.lock.cache.Cache;
+import com.wondertek.mybatis.lock.cache.LocalVersionLockerCache;
+import com.wondertek.mybatis.lock.cache.VersionLockerCache;
+import com.wondertek.mybatis.lock.exception.LockException;
+import com.wondertek.mybatis.lock.uitl.Constent;
 import org.apache.ibatis.binding.MapperMethod;
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
@@ -55,18 +55,22 @@ public class VersionLockerResolver {
     }
 
     static VersionLocker resolve(MetaObject metaObject) {
-        //获取执行方法的类型 如果不是update，返回false
+        //获取方法与xml文件的映射
         MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("mappedStatement");
 
+        //获取执行方法的类型 如果不是update，返回false
         if (!Objects.equals(mappedStatement.getSqlCommandType(), SqlCommandType.UPDATE)) {
             return falseLocker;
         }
 
+        //获取SQL语句
         BoundSql boundSql = (BoundSql) metaObject.getValue("boundSql");
+        //获取参数列表对象
         Object parameterObject = boundSql.getParameterObject();
 
         Class<?>[] paramClasses = null;
 
+        //参数列表是否是一个map
         if (parameterObject instanceof MapperMethod.ParamMap) {
             MapperMethod.ParamMap<?> paramMap = (MapperMethod.ParamMap<?>) parameterObject;
             if (!paramMap.isEmpty()) {
