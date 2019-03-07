@@ -52,12 +52,14 @@ public class OptimisticLocker implements Interceptor {
                 //继续执行调用链
                 return invocation.proceed();
             }
+            //获取执行SQL语句，添加乐观锁配置
             String originalSql = (String) metaObject.getValue("boundSql.sql");
             StringBuilder builder = new StringBuilder(originalSql);
             builder.append(" AND ");
             builder.append(versionColumn);
             builder.append(" = ?");
             metaObject.setValue("boundSql.sql", builder.toString());
+            //设置参数
         } else if ("setParameters".equals(invocationMethod)) {
             ParameterHandler parameterHandler = (ParameterHandler) PluginUtil.processTarget(invocation.getTarget());
             MetaObject metaObject = SystemMetaObject.forObject(parameterHandler);
@@ -69,6 +71,7 @@ public class OptimisticLocker implements Interceptor {
             }
 
             BoundSql boundSql = (BoundSql) metaObject.getValue("boundSql");
+            //获取SQL绑定的参数
             Object parameterObject = boundSql.getParameterObject();
             if (parameterObject instanceof MapperMethod.ParamMap<?>) {
                 MapperMethod.ParamMap<?> paramMap = (MapperMethod.ParamMap<?>) parameterObject;
