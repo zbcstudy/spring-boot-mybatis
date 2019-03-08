@@ -2,6 +2,8 @@ mybatis:
 #  config-location: mybatis-config.xml
   mapper-locations: classpath:/mapper/EmployeeMapper.xml
   type-aliases-package: com.wondertek.mybatis.domain
+  configuration:
+    cache-enabled: true
 #  configuration-properties: mybatis-config.xml
 
 spring:
