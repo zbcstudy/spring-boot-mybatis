@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.wondertek.mybatis.domain.Employee;
 import com.wondertek.mybatis.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class EmployeeService {
         return employees;
     }
 
+    @Cacheable(cacheNames = "employee",key = "#id")
     public Map getEmployeeById(Integer id) {
         Map<String, Object> empByIdReturnMap = employeeMapper.getEmpByIdReturnMap(id);
         return empByIdReturnMap;
